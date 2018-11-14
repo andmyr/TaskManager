@@ -1,0 +1,18 @@
+{
+	"data":{
+		"mechanizms":[
+			{
+				"name":"cars",
+				"items":[{"name":"Mersedes"},{"name":"Opel"},{"name":"Clinton"},{"name":"Ferrari"},{"name":"Mazda"},{"name":"Mitsubishi"},{"name":"BMW"},{"name":"Audi"},{"name":"Hammer"}]
+			},
+			{
+				"name":"planes",
+				"items":[{"name":"Boeing"},{"name":"Airbus"},{"name":"Falcon"},{"name":"Embraer"},{"name":"Bombardier"},{"name":"Gulfstream"},{"name":"Aerospace"}]
+			},
+			{
+				"name":"ships",
+				"items":[{"name":"Imabary"},{"name":"Waigaoqiao"},{"name":"Mipo"},{"name":"Samsung"},{"name":"Tsuneishi"},{"name":"Oshima"},{"name":"Daewoo"}]
+			}
+		]
+	}
+}
