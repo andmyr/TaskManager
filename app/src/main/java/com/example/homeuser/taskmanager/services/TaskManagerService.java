@@ -1,6 +1,5 @@
 package com.example.homeuser.taskmanager.services;
 
-import android.app.Activity;
 import android.app.Service;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -33,12 +32,6 @@ public class TaskManagerService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         return binder;
-    }
-
-    public class LocalBinder extends Binder {
-        public TaskManagerService getServiceInstance() {
-            return TaskManagerService.this;
-        }
     }
 
     public void setTaskList(List<Task> taskList, Interfaces.ReturnSortResultInterface resultInterface) {
@@ -77,13 +70,13 @@ public class TaskManagerService extends Service {
         Log.i(LOG_TAG, "Starting next tasks");
         SortAsyncTask firstSortAsyncTask = new SortAsyncTask(firstEndTaskCallbackInterface);
         firstSortAsyncTask.execute(taskList.get(nextTaskNo));
-        if (taskList.size() > nextTaskNo + 1) {
+        if (taskList.size() > nextTaskNo + 2) {
             SortAsyncTask secondSortAsyncTask = new SortAsyncTask(secondEndTaskCallbackInterface);
             secondSortAsyncTask.execute(taskList.get(nextTaskNo + 1));
         }
     }
 
-    private void nextTask() {
+    private synchronized void nextTask() {
         if ((firstTaskDone && secondTaskDone)) {
             nextTaskNo += 2;
             firstTaskDone = false;
@@ -95,6 +88,12 @@ public class TaskManagerService extends Service {
                 taskList.clear();
                 nextTaskNo = 0;
             }
+        }
+        if (firstTaskDone && !secondTaskDone
+                && (nextTaskNo + 1) == taskList.size()) {
+            Log.i(LOG_TAG, "All tasks done");
+            taskList.clear();
+            nextTaskNo = 0;
         }
     }
 
@@ -114,6 +113,12 @@ public class TaskManagerService extends Service {
         @Override
         protected List<? extends Mechanizm> doInBackground(Task... tasks) {
             return tasks[0].getSortType().sort(tasks[0].getMechanismList());
+        }
+    }
+
+    public class LocalBinder extends Binder {
+        public TaskManagerService getServiceInstance() {
+            return TaskManagerService.this;
         }
     }
 }
